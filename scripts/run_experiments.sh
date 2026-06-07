@@ -153,6 +153,7 @@ run_sql_file "$ROOT_DIR/sql/10_async_aggregation.sql"
 run_sql_file "$ROOT_DIR/sql/20_dispatch_jobs.sql"
 run_sql_file "$ROOT_DIR/sql/30_function_calls.sql"
 run_sql_file "$ROOT_DIR/sql/40_http_ai_simulation.sql"
+run_sql_file "$ROOT_DIR/sql/45_secret_handling.sql"
 run_sql_file "$ROOT_DIR/sql/50_signal_approval.sql"
 run_sql_file "$ROOT_DIR/sql/70_failure_modes.sql"
 

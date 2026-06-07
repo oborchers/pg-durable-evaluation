@@ -47,6 +47,7 @@ Practical follow-up run: `runs/20260607T125709Z-practical`.
 | 20 | Dispatching jobs | Can a durable loop dispatch pending jobs until the queue is empty? | `sql/20_dispatch_jobs.sql` | Passed |
 | 30 | Calling functions | Can workflows call local SQL/PLpgSQL functions and pass results between steps? | `sql/30_function_calls.sql` | Passed |
 | 40 | External API / AI simulation | Can `df.http()` call an external endpoint and persist the result as an async processing step? | `sql/40_http_ai_simulation.sql` | Passed |
+| 45 | Secret handling | When a workflow calls an authenticated endpoint, does `df.setvar` substitution reach the wire, and where does the secret come to rest? | `sql/45_secret_handling.sql` | Passed |
 | 50 | Signals / approval | Can a workflow pause until an external signal arrives and then branch on the payload? | `sql/50_signal_approval.sql` | Passed, with timing caveat |
 | 60 | Restart resilience | Does a sleeping multi-step workflow survive a container restart without re-running completed steps? | `scripts/restart_resilience.sh` | Passed |
 | 70 | Failure/security modes | Are unsafe HTTP destinations, missing HTTP grants, and DSL authoring mistakes rejected clearly? | `sql/70_failure_modes.sql` | Passed |

@@ -25,6 +25,7 @@ The harness builds the upstream extension from a pinned source checkout, runs it
 - In-flight workflows call the SQL function body that exists when the node executes, not the body that existed when the workflow started.
 - `df.http()` has a restrictive native HTTP security model, but it does not govern arbitrary HTTP-capable SQL extensions such as `postgres-http`.
 - `df.metrics()` can overcount failed instances after rolled-back starts because lower-level orphan execution rows are counted.
+- There is no built-in secret store (`df.secrets` is specced but not implemented in this build). `df.setvar` substitutes a key into request headers, but the resolved key is persisted in plain text in `df.vars` and in `duroxide.history.event_data` (runtime history). The graph definition (`df.nodes`) stores only the placeholder.
 
 ## Quick Start
 

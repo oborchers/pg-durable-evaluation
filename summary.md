@@ -56,6 +56,7 @@ practical follow-up: `runs/20260607T125709Z-practical`
 - Non-2xx HTTP responses require explicit workflow logic.
 - DSL quoting is the biggest authoring footgun.
 - Signal workflows need more focused testing before relying on complex approval flows.
+- No secret store exists in this build (`df.secrets` is specced as T11 but not implemented). `df.setvar` substitution into an Authorization header works, but the resolved key is persisted in plain text in both `df.vars` and `duroxide.history.event_data`; only the placeholder is stored in the graph (`df.nodes`). Verified by `sql/45_secret_handling.sql`.
 
 ## Blog Thesis
 
