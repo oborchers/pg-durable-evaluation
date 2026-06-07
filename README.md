@@ -2,9 +2,7 @@
 
 Independent local evaluation of Microsoft's `pg_durable` PostgreSQL extension as a Postgres-native durable workflow/job engine.
 
-This is a public companion repo for a technical blog post. It is intentionally not an official Microsoft project and should be read as field notes: what worked, what failed, and what needs more scrutiny before production use.
-
-Keywords: PostgreSQL, `pg_durable`, durable workflows, SQL DSL, background workers, Docker, `postgres-http`, observability, retry semantics, transaction semantics, database migrations.
+This is a public companion repo for a technical blog post. It records what worked, what failed, and what needs more scrutiny before production use.
 
 The harness builds the upstream extension from a pinned source checkout, runs it in Docker, and executes SQL scenarios that cover:
 
