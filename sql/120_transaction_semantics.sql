@@ -23,8 +23,8 @@ DECLARE
     inst_id text;
 BEGIN
     inst_id := df.start(
-        'INSERT INTO poc.txn_semantics_log(msg, instance_id)
-         VALUES (''same_transaction_committed'', ''{sys_instance_id}'')',
+        $q$INSERT INTO poc.txn_semantics_log(msg, instance_id)
+         VALUES ('same_transaction_committed', '{sys_instance_id}')$q$,
         'poc-txn-same-transaction-commit'
     );
 
@@ -59,8 +59,8 @@ END $$;
 
 BEGIN;
 SELECT df.start(
-    'INSERT INTO poc.txn_semantics_log(msg, instance_id)
-     VALUES (''explicit_rollback_should_not_run'', ''{sys_instance_id}'')',
+    $$INSERT INTO poc.txn_semantics_log(msg, instance_id)
+     VALUES ('explicit_rollback_should_not_run', '{sys_instance_id}')$$,
     'poc-txn-explicit-rollback'
 );
 ROLLBACK;
@@ -101,8 +101,8 @@ DECLARE
     inst_id text;
 BEGIN
     inst_id := df.start(
-        'INSERT INTO poc.txn_semantics_log(msg, instance_id)
-         VALUES (''trigger_transaction_committed'', ''{sys_instance_id}'')',
+        $q$INSERT INTO poc.txn_semantics_log(msg, instance_id)
+         VALUES ('trigger_transaction_committed', '{sys_instance_id}')$q$,
         format('poc-txn-trigger-%s', NEW.id)
     );
 

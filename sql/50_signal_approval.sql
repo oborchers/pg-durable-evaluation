@@ -14,19 +14,19 @@ INSERT INTO _state
 SELECT df.start(
     df.wait_for_signal('approval', 60) |=> 'decision'
     ~> df.if(
-        'SELECT COALESCE(($decision::jsonb->''data''->>''approved'')::boolean, false)',
-        'UPDATE poc.approvals
-            SET status = ''approved'',
+        $$SELECT COALESCE(($decision::jsonb->'data'->>'approved')::boolean, false)$$,
+        $$UPDATE poc.approvals
+            SET status = 'approved',
                 decision = $decision::jsonb,
                 decided_at = now()
-            WHERE id = (SELECT id FROM poc.approvals WHERE status = ''needs_review'' ORDER BY id LIMIT 1)
-            RETURNING id, status',
-        'UPDATE poc.approvals
-            SET status = ''rejected'',
+            WHERE id = (SELECT id FROM poc.approvals WHERE status = 'needs_review' ORDER BY id LIMIT 1)
+            RETURNING id, status$$,
+        $$UPDATE poc.approvals
+            SET status = 'rejected',
                 decision = $decision::jsonb,
                 decided_at = now()
-            WHERE id = (SELECT id FROM poc.approvals WHERE status = ''needs_review'' ORDER BY id LIMIT 1)
-            RETURNING id, status'
+            WHERE id = (SELECT id FROM poc.approvals WHERE status = 'needs_review' ORDER BY id LIMIT 1)
+            RETURNING id, status$$
     ),
     'poc-signal-approval'
 );

@@ -7,7 +7,7 @@ CREATE TEMP TABLE _state(instance_id text);
 
 INSERT INTO _state
 SELECT df.start(
-    'SELECT ''hello pg_durable'' AS message',
+    $$SELECT 'hello pg_durable' AS message$$,
     'poc-readiness'
 );
 

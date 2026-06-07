@@ -16,8 +16,8 @@ CREATE TEMP TABLE _state(instance_id text);
 
 INSERT INTO _state
 SELECT df.start(
-    'SELECT id, input_text FROM poc.api_transforms WHERE status = ''queued'' ORDER BY id LIMIT 1' |=> 'item'
-    ~> 'UPDATE poc.api_transforms SET status = ''processing'' WHERE id = $item.id'
+    $$SELECT id, input_text FROM poc.api_transforms WHERE status = 'queued' ORDER BY id LIMIT 1$$ |=> 'item'
+    ~> $$UPDATE poc.api_transforms SET status = 'processing' WHERE id = $item.id$$
     ~> (
         df.http(
             '{transform_url}',
@@ -27,13 +27,13 @@ SELECT df.start(
             30
         ) |=> 'api_response'
     )
-    ~> 'UPDATE poc.api_transforms
-        SET status = ''completed'',
+    ~> $$UPDATE poc.api_transforms
+        SET status = 'completed',
             response = $api_response::jsonb,
             transformed_text = upper(input_text),
             completed_at = now()
         WHERE id = $item.id
-        RETURNING id, status, transformed_text',
+        RETURNING id, status, transformed_text$$,
     'poc-http-ai-simulation'
 );
 

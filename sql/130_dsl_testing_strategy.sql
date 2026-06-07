@@ -58,8 +58,8 @@ DECLARE
     invalid_rejected boolean := false;
     invalid_message text;
 BEGIN
-    graph := 'INSERT INTO poc.dsl_test_observations(kind, detail)
-              VALUES (''dry_run_executed'', ''{"source": "df.start"}''::jsonb)';
+    graph := $q$INSERT INTO poc.dsl_test_observations(kind, detail)
+              VALUES ('dry_run_executed', '{"source": "df.start"}'::jsonb)$q$;
 
     PERFORM poc.assert_true(
         NOT EXISTS (SELECT 1 FROM poc.dsl_test_observations WHERE kind = 'dry_run_executed'),
@@ -91,8 +91,8 @@ INSERT INTO _dsl_state(scenario, instance_id)
 SELECT
     'dry_run_boundary',
     df.start(
-        'INSERT INTO poc.dsl_test_observations(kind, detail)
-         VALUES (''dry_run_executed'', ''{"source": "df.start"}''::jsonb)',
+        $$INSERT INTO poc.dsl_test_observations(kind, detail)
+         VALUES ('dry_run_executed', '{"source": "df.start"}'::jsonb)$$,
         'poc-dsl-test-dry-run-boundary'
     );
 
@@ -116,9 +116,9 @@ INSERT INTO _dsl_state(scenario, instance_id)
 SELECT
     'captured_result',
     df.start(
-        ('SELECT 42 AS answer' |=> 'answer')
-        ~> 'INSERT INTO poc.dsl_test_observations(kind, detail)
-            VALUES (''captured_result'', jsonb_build_object(''answer'', $answer))',
+        ($$SELECT 42 AS answer$$ |=> 'answer')
+        ~> $$INSERT INTO poc.dsl_test_observations(kind, detail)
+            VALUES ('captured_result', jsonb_build_object('answer', $answer))$$,
         'poc-dsl-test-captured-result'
     );
 

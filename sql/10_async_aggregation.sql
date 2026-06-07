@@ -11,15 +11,15 @@ INSERT INTO _state
 SELECT
     df.start(
         (
-            ('SELECT pg_sleep(2), count(*)::int AS user_count FROM poc.events WHERE kind = ''signup''' |=> 'users')
+            ($$SELECT pg_sleep(2), count(*)::int AS user_count FROM poc.events WHERE kind = 'signup'$$ |=> 'users')
             &
-            ('SELECT pg_sleep(2), count(*)::int AS paid_order_count FROM poc.events WHERE kind = ''paid_order''' |=> 'orders')
+            ($$SELECT pg_sleep(2), count(*)::int AS paid_order_count FROM poc.events WHERE kind = 'paid_order'$$ |=> 'orders')
             &
-            ('SELECT pg_sleep(2), coalesce(sum(amount), 0)::numeric(12,2) AS revenue FROM poc.events WHERE kind = ''paid_order''' |=> 'revenue')
+            ($$SELECT pg_sleep(2), coalesce(sum(amount), 0)::numeric(12,2) AS revenue FROM poc.events WHERE kind = 'paid_order'$$ |=> 'revenue')
         )
-        ~> 'INSERT INTO poc.metric_snapshots(user_count, paid_order_count, revenue, source)
-            VALUES ($users.user_count, $orders.paid_order_count, $revenue.revenue, ''parallel-fanout'')
-            RETURNING id, user_count, paid_order_count, revenue',
+        ~> $$INSERT INTO poc.metric_snapshots(user_count, paid_order_count, revenue, source)
+            VALUES ($users.user_count, $orders.paid_order_count, $revenue.revenue, 'parallel-fanout')
+            RETURNING id, user_count, paid_order_count, revenue$$,
         'poc-async-aggregation'
     ),
     clock_timestamp();

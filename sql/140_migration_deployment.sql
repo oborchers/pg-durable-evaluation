@@ -37,10 +37,10 @@ INSERT INTO _deploy_state(scenario, instance_id)
 SELECT
     'replace_inflight_function',
     df.start(
-        'INSERT INTO poc.deployment_log(scenario, instance_id, event)
-         VALUES (''replace_inflight_function'', ''{sys_instance_id}'', ''before_versioned_call'')'
+        $$INSERT INTO poc.deployment_log(scenario, instance_id, event)
+         VALUES ('replace_inflight_function', '{sys_instance_id}', 'before_versioned_call')$$
         ~> df.sleep(3)
-        ~> 'SELECT poc.versioned_worker(''replace_inflight_function'', ''{sys_instance_id}'') AS observed_version',
+        ~> $$SELECT poc.versioned_worker('replace_inflight_function', '{sys_instance_id}') AS observed_version$$,
         'poc-deploy-replace-inflight-function'
     );
 
@@ -120,10 +120,10 @@ INSERT INTO _deploy_state(scenario, instance_id)
 SELECT
     'drop_inflight_function',
     df.start(
-        'INSERT INTO poc.deployment_log(scenario, instance_id, event)
-         VALUES (''drop_inflight_function'', ''{sys_instance_id}'', ''before_versioned_call'')'
+        $$INSERT INTO poc.deployment_log(scenario, instance_id, event)
+         VALUES ('drop_inflight_function', '{sys_instance_id}', 'before_versioned_call')$$
         ~> df.sleep(3)
-        ~> 'SELECT poc.versioned_worker(''drop_inflight_function'', ''{sys_instance_id}'') AS observed_version',
+        ~> $$SELECT poc.versioned_worker('drop_inflight_function', '{sys_instance_id}') AS observed_version$$,
         'poc-deploy-drop-inflight-function'
     );
 
@@ -192,10 +192,10 @@ INSERT INTO _deploy_state(scenario, instance_id)
 SELECT
     'rollback_migration',
     df.start(
-        'INSERT INTO poc.deployment_log(scenario, instance_id, event)
-         VALUES (''rollback_migration'', ''{sys_instance_id}'', ''before_versioned_call'')'
+        $$INSERT INTO poc.deployment_log(scenario, instance_id, event)
+         VALUES ('rollback_migration', '{sys_instance_id}', 'before_versioned_call')$$
         ~> df.sleep(3)
-        ~> 'SELECT poc.versioned_worker(''rollback_migration'', ''{sys_instance_id}'') AS observed_version',
+        ~> $$SELECT poc.versioned_worker('rollback_migration', '{sys_instance_id}') AS observed_version$$,
         'poc-deploy-rollback-migration'
     );
 

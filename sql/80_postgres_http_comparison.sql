@@ -41,15 +41,15 @@ SELECT
                 30
             ) |=> 'response'
         )
-        ~> 'INSERT INTO poc.http_comparison_results(client, endpoint, status_code, ok, body_has_resources, raw)
+        ~> $$INSERT INTO poc.http_comparison_results(client, endpoint, status_code, ok, body_has_resources, raw)
             SELECT
-                ''df.http'',
-                ''https://api.github.com/rate_limit'',
-                ($response::jsonb->>''status'')::int,
-                ($response::jsonb->>''ok'')::boolean,
-                (($response::jsonb->>''body'')::jsonb ? ''resources''),
+                'df.http',
+                'https://api.github.com/rate_limit',
+                ($response::jsonb->>'status')::int,
+                ($response::jsonb->>'ok')::boolean,
+                (($response::jsonb->>'body')::jsonb ? 'resources'),
                 $response::jsonb
-            RETURNING status_code',
+            RETURNING status_code$$,
         'poc-compare-df-http'
     );
 
@@ -60,30 +60,30 @@ INSERT INTO _state(label, instance_id)
 SELECT
     'postgres-http-rate-limit',
     df.start(
-        'INSERT INTO poc.http_comparison_results(client, endpoint, status_code, ok, body_has_resources, raw)
+        $$INSERT INTO poc.http_comparison_results(client, endpoint, status_code, ok, body_has_resources, raw)
          SELECT
-             ''postgres-http'',
-             ''https://api.github.com/rate_limit'',
+             'postgres-http',
+             'https://api.github.com/rate_limit',
              response.status,
              response.status BETWEEN 200 AND 299,
-             response.content::jsonb ? ''resources'',
+             response.content::jsonb ? 'resources',
              jsonb_build_object(
-                 ''status'', response.status,
-                 ''content_type'', response.content_type,
-                 ''body'', response.content::jsonb,
-                 ''headers'', to_jsonb(response.headers)
+                 'status', response.status,
+                 'content_type', response.content_type,
+                 'body', response.content::jsonb,
+                 'headers', to_jsonb(response.headers)
              )
          FROM http((
-             ''GET'',
-             ''https://api.github.com/rate_limit'',
+             'GET',
+             'https://api.github.com/rate_limit',
              ARRAY[
-                 http_header(''Accept'', ''application/vnd.github+json''),
-                 http_header(''User-Agent'', ''pg-durable-poc'')
+                 http_header('Accept', 'application/vnd.github+json'),
+                 http_header('User-Agent', 'pg-durable-poc')
              ]::http_header[],
              NULL,
              NULL
          )::http_request) AS response
-         RETURNING status_code',
+         RETURNING status_code$$,
         'poc-compare-postgres-http'
     );
 
@@ -94,20 +94,20 @@ INSERT INTO _state(label, instance_id)
 SELECT
     'postgres-http-example-dot-com',
     df.start(
-        'INSERT INTO poc.http_comparison_results(client, endpoint, status_code, ok, body_has_resources, raw)
+        $$INSERT INTO poc.http_comparison_results(client, endpoint, status_code, ok, body_has_resources, raw)
          SELECT
-             ''postgres-http'',
-             ''https://example.com/'',
+             'postgres-http',
+             'https://example.com/',
              response.status,
              response.status BETWEEN 200 AND 299,
              false,
              jsonb_build_object(
-                 ''status'', response.status,
-                 ''content_type'', response.content_type,
-                 ''content_prefix'', left(response.content, 80)
+                 'status', response.status,
+                 'content_type', response.content_type,
+                 'content_prefix', left(response.content, 80)
              )
-         FROM http_get(''https://example.com/'') AS response
-         RETURNING status_code',
+         FROM http_get('https://example.com/') AS response
+         RETURNING status_code$$,
         'poc-compare-postgres-http-example'
     );
 

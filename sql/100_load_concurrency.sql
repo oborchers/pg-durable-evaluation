@@ -84,7 +84,7 @@ BEGIN
 
         inst_id := df.start(
             format(
-                'SELECT * FROM poc.record_load_workflow(%L, %s, %s, ''{sys_instance_id}'', %s)',
+                $q$SELECT * FROM poc.record_load_workflow(%L, %s, %s, '{sys_instance_id}', %s)$q$,
                 p_batch,
                 p_worker_id,
                 workflow_seq,

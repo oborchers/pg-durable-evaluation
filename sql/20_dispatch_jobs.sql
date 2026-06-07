@@ -16,8 +16,8 @@ CREATE TEMP TABLE _state(instance_id text);
 INSERT INTO _state
 SELECT df.start(
     df.loop(
-        'SELECT * FROM poc.dispatch_next_job()',
-        'SELECT EXISTS (SELECT 1 FROM poc.jobs WHERE status = ''pending'')'
+        $$SELECT * FROM poc.dispatch_next_job()$$,
+        $$SELECT EXISTS (SELECT 1 FROM poc.jobs WHERE status = 'pending')$$
     ),
     'poc-dispatch-jobs'
 );

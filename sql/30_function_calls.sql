@@ -9,9 +9,9 @@ CREATE TEMP TABLE _state(instance_id text);
 
 INSERT INTO _state
 SELECT df.start(
-    'SELECT poc.create_report_request(''daily-revenue'') AS report_id' |=> 'request'
-    ~> 'SELECT * FROM poc.finish_report_request($request.report_id)' |=> 'finished'
-    ~> 'SELECT $finished.report_id AS report_id, $finished.total_amount AS total_amount, $finished.status AS status',
+    $$SELECT poc.create_report_request('daily-revenue') AS report_id$$ |=> 'request'
+    ~> $$SELECT * FROM poc.finish_report_request($request.report_id)$$ |=> 'finished'
+    ~> $$SELECT $finished.report_id AS report_id, $finished.total_amount AS total_amount, $finished.status AS status$$,
     'poc-function-calls'
 );
 

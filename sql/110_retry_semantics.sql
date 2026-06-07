@@ -48,7 +48,7 @@ CREATE TEMP TABLE _retry_state (
 
 INSERT INTO _retry_state(scenario, instance_id)
 SELECT 'native_flaky_sql_node',
-       df.start('SELECT * FROM poc.flaky_sequence(2)', 'poc-retry-native-flaky-sql');
+       df.start($$SELECT * FROM poc.flaky_sequence(2)$$, 'poc-retry-native-flaky-sql');
 
 DO $$
 DECLARE
@@ -108,7 +108,7 @@ INSERT INTO _retry_state(scenario, instance_id)
 SELECT
     'manual_resubmission_after_failure',
     df.start(
-        'SELECT * FROM poc.flaky_sequence(2)',
+        $$SELECT * FROM poc.flaky_sequence(2)$$,
         'poc-retry-manual-resubmit'
     )
 WHERE (

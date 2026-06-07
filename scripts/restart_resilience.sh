@@ -21,9 +21,9 @@ INSTANCE_ID="$(
 SET SESSION AUTHORIZATION poc_runner;
 TRUNCATE poc.restart_probe;
 SELECT df.start(
-    'INSERT INTO poc.restart_probe(marker) VALUES (''before_sleep'')'
+    $$INSERT INTO poc.restart_probe(marker) VALUES ('before_sleep')$$
     ~> df.sleep(8)
-    ~> 'INSERT INTO poc.restart_probe(marker) VALUES (''after_sleep'')',
+    ~> $$INSERT INTO poc.restart_probe(marker) VALUES ('after_sleep')$$,
     'poc-restart-resilience'
 );
 RESET SESSION AUTHORIZATION;

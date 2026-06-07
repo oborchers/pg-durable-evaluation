@@ -70,7 +70,7 @@ BEGIN
        AND NEW.workflow_instance_id IS NULL
        AND (TG_OP = 'INSERT' OR OLD.status IS DISTINCT FROM NEW.status) THEN
         inst_id := df.start(
-            format('SELECT * FROM poc.process_trigger_item(%s, ''{sys_instance_id}'')', NEW.id),
+            format($q$SELECT * FROM poc.process_trigger_item(%s, '{sys_instance_id}')$q$, NEW.id),
             format('poc-trigger-item-%s', NEW.id)
         );
 
