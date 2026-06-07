@@ -1,0 +1,8 @@
+repository=https://github.com/microsoft/pg_durable
+website=https://microsoft.github.io/pg_durable/
+skill=https://github.com/microsoft/pg_durable/blob/main/.agents/skills/pg-durable-sql/SKILL.md
+commit=11ac64e3adb64c14386be5c737b3a3806d873fc4
+version=0.2.2
+postgres=17
+captured_at=2026-06-07
+
