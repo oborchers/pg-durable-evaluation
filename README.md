@@ -90,3 +90,7 @@ See `upstream.lock` for the exact source revision used by this PoC. The upstream
 ## Notes For Readers
 
 The harness builds from source, so the first run can take several minutes. Docker Hub authentication may matter for base-image pulls. The local image uses pg_durable's test-domain HTTP feature so the scenarios can call public test endpoints without secrets.
+
+## Author
+
+Built by [Dr. Oliver Borchers](https://www.drborchers.com), Executive AI and Automation Partner and Head of AI Engineering at IU Group.
